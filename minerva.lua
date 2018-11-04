@@ -2,7 +2,7 @@
 emulator = 'emu_gens' --Your emulator
 game = 'scr_s3k' --Your game
 additional_scripts = {'std_betterrewind'} --Additional scripts. If no additional scripts, put {}
-base_path = 'C:/Users/ACER/Desktop/Games/Emulators/Gens Rerecording 11c/Lua/Minerva/'
+base_path = 'C:/Users/ACER/Desktop/Games/Emulators/Gens Rerecording 11c/Minerva/'
 
 -- DO NOT MODIFY THE CODE BELOW THIS LINE --
 -- 
@@ -87,9 +87,12 @@ package.path = string.format("%s%s", base_path, 'Scripts/?.lua')
 -- already loaded
 function crequire(name)
 	package.loaded[name] = nil
-	if not pcall(function() require(name) end) then
+	f = io.open(string.format("%sScripts/%s.lua",base_path,name),'r')
+	if f == nil then
 		mnv_error(string.format('File %sScripts/%s.lua not found. Are you sure your base_path in minerva.lua is set correctly and that you are calling the right scripts?',base_path,name))
 	end
+	io.close(f)
+	require(name) 
 end
 
 -- Use this function when requiring multiple scripts (script_list is a table)
