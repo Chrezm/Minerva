@@ -37,9 +37,9 @@ function overlay()
 				color = "white"
 			end
 			if id_is_word then
-				gui.text(x_right+fnt_width*13, y, string.format("%s%02x", "0x",(mem_read_uword(PLAYER1+OBJ_LASTON)-PLAYER1_SHR)/(OST_ENTRY_LENGTH)), color, "black")
+				gui.text(x_right+fnt_width*13, y, string.format("%02x",(mem_read_uword(PLAYER1+OBJ_LASTON)-PLAYER1_SHR)/(OST_ENTRY_LENGTH)), color, "black")
 			else
-				gui.text(x_right+fnt_width*13, y, string.format("%s%02x","0x", mem_read_ubyte(PLAYER1+OBJ_LASTON)), color, "black")
+				gui.text(x_right+fnt_width*13, y, string.format("%02x", mem_read_ubyte(PLAYER1+OBJ_LASTON)), color, "black")
 			end
 		end
 	end
@@ -57,9 +57,9 @@ function overlay()
 				color = "white"
 			end
 			if id_is_word then
-				gui.text(x_right+fnt_width*13, y, string.format("%s%02x", "0x",(mem_read_uword(PLAYER2+OBJ_LASTON)-PLAYER2_SHR)/(OST_ENTRY_LENGTH)), color, "black")
+				gui.text(x_right+fnt_width*13, y, string.format("%02x", (mem_read_uword(PLAYER2+OBJ_LASTON)-PLAYER2_SHR)/(OST_ENTRY_LENGTH)), color, "black")
 			else
-				gui.text(x_right+fnt_width*13, y, string.format("%s%02x","0x", mem_read_ubyte(PLAYER2+OBJ_LASTON)), color, "black")
+				gui.text(x_right+fnt_width*13, y, string.format("%02x",mem_read_ubyte(PLAYER2+OBJ_LASTON)), color, "black")
 			end
 
 			if show_2p_last_visible_stood_on then
@@ -138,7 +138,7 @@ function overlay()
 	if current_page > max_pages then
 		current_page = max_pages
 	end
-	page_length = (y_limit-y_off)/7
+	page_length = (y_limit-y_off)/fnt_height
 	if any_objects_flag then
 		objects_in_memory = (max_pages-1)*page_length+(j-1)%page_length+1
 	else

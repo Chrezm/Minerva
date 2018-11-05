@@ -16,7 +16,7 @@ keys = input.get()
 prevkeys = {}
 persistent_functions = {}
 
-version = '1.0.0 RC1'
+version = '1.0.0 RC2'
 print(string.format("---\r\nWelcome to Minerva v. %s\r\n---",version))
 
 int_scripts_to_run = {emulator}
