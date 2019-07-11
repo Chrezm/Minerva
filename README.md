@@ -13,7 +13,7 @@ Native support is provided for the following games:
 * Sonic the Hedgehog 2 (16-bit) (`scr_s2`)
 * Sonic 3 & Knuckles (`scr_s3k`)
 
-As well as the following emulators.
+As well as the following emulators:
 * Bizhawk (`emu_bizhawk`)
 * Gens (`emu_gens`)
 
