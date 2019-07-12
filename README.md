@@ -17,9 +17,9 @@ As well as the following emulators:
 * Bizhawk (`emu_bizhawk`)
 * Gens (`emu_gens`)
 
-To load a particular game script, open `minerva.lua` and replace the line `game = scr_...` with the name of the file of the game you want to run, usually a `scr_` file. Please do not include `.lua`.
+To load a particular game script, open `environment.lua` and replace the line `game = scr_...` with the name of the file of the game you want to run, usually a `scr_` file. Please do not include `.lua`.
 
-To load a particular emulator, open `minerva.lua` and replace the line `emu = emu_...` with the name of the file of the emulator you want to run, usually a `emu_` file. Please do not include `.lua`.
+To load a particular emulator, open `environment.lua` and replace the line `emu = emu_...` with the name of the file of the emulator you want to run, usually a `emu_` file. Please do not include `.lua`.
 
 If you have any questions, please contact the author on Discord (Chrezm#2889).
 

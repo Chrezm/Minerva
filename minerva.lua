@@ -1,29 +1,22 @@
--- PARAMETERS THAT CAN BE MODIFIED --
-emulator = 'emu_gens' --Your emulator
-game = 'scr_s3k' --Your game
-additional_scripts = {'std_betterrewind'} --Additional scripts. If no additional scripts, put {}
-base_path = 'C:/Users/ACER/Desktop/Games/Emulators/Gens Rerecording 11c/Minerva/'
-
--- DO NOT MODIFY THE CODE BELOW THIS LINE --
 -- 
 -- Initialisation
 --
+version = '1.0.1'
+print(string.format("---\r\nWelcome to Minerva v. %s\r\n---", version))
 
+-- Find default base path
+local dir = debug.getinfo(1,'S').source
+local s, _ = dir:find('minerva.lua')
+dir = string.format("%s%s", dir:sub(2, s-1), '?.lua')
+package.path = dir
+
+-- Load more global variables
 cs_keys = {}
 cs_keydelay = {}
 cs_spkeys = {'LeftShift'}
 keys = input.get()
 prevkeys = {}
 persistent_functions = {}
-
-version = '1.0.0'
-print(string.format("---\r\nWelcome to Minerva v. %s\r\n---",version))
-
-int_scripts_to_run = {emulator}
-for i,name in pairs(additional_scripts) do
-	table.insert(int_scripts_to_run, name)
-end
-table.insert(int_scripts_to_run, game)
 
 function sr_nil()
 end
@@ -75,7 +68,22 @@ function lua_error(current_error)
 	end
 	error()
 end
-	
+
+--
+-- Load environment
+--
+package.loaded['environment'] = nil
+local ok, err = pcall(function() require('environment') end)
+if not ok then
+    mnv_error(string.format('File \environment.lua not found. Are you sure it exists in the root folder of your installation?'))
+end
+
+int_scripts_to_run = {emulator}
+for i,name in pairs(additional_scripts) do
+	table.insert(int_scripts_to_run, name)
+end
+table.insert(int_scripts_to_run, game)
+
 --
 -- Deal with script loading
 --
