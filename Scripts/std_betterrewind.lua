@@ -54,5 +54,5 @@ function rewind()
 	end
 end
 
-met_betterrewind = {sr_rewindon,sr_rewindon,sr_rewindon,sr_rewindoff}
+met_betterrewind = { sr_rewindon, sr_rewindon, sr_rewindon, sr_rewindoff }
 table.insert(persistent_functions, rewind)

@@ -4,7 +4,7 @@ show_2p_last_stood_on = true
 show_2p_last_visible_stood_on = true
 id_is_word = true --Sonic 3 & Knuckles uses RAM addresses
 show_object_list = true
-aux = fnt_width*4 -- Sonic 3 & Knuckles requires 5-wide IDs, so add 4 extra spaces
+aux = fnt_width * 4 -- Sonic 3 & Knuckles requires 5-wide IDs, so add 4 extra spaces
 
 -- GAME CONSTANTS --
 OST_START = 0xFFB000
@@ -47,15 +47,17 @@ STG_RESTART = 0xFFFE02
 PLY2_LAST_VISIBLE_STOOD_ON = 0xFFF700
 
 -- LOAD SUBSCRIPTS --
-subscripts_to_run = {'std_precisemovement', 'std_slotsonobjects', 'std_overlay', 'std_bettersonicdebug'}
+subscripts_to_run = { 'std_precisemovement', 'std_slotsonobjects', 'std_overlay', 'std_bettersonicdebug' } --, 'std_bruteforcer'}
+-- subscripts_to_run = {'std_bruteforcer'}
+
 load_scripts(subscripts_to_run)
 
 -- CUSTOM SCRIPTS --
 
 --[[
-Parameter syntax: 
+Parameter syntax:
 -Thing to do on key press (only one frame)
--Thing to do when assumed key delay expires, 
+-Thing to do when assumed key delay expires,
 -Thing to do while key delay is counting down
 -Thing to do when key is released (only one frame)
 ]]

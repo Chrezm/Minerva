@@ -46,15 +46,15 @@ LAST_CHKP = 0xFFFE30
 STG_RESTART = 0xFFFE02
 
 -- LOAD SUBSCRIPTS --
-subscripts_to_run = {'std_precisemovement', 'std_slotsonobjects', 'std_overlay', 'std_bettersonicdebug'}
+subscripts_to_run = { 'std_precisemovement', 'std_slotsonobjects', 'std_overlay', 'std_bettersonicdebug' }
 load_scripts(subscripts_to_run)
 
 -- CUSTOM SCRIPTS --
 
 --[[
-Parameter syntax: 
+Parameter syntax:
 -Thing to do on key press (only one frame)
--Thing to do when assumed key delay expires, 
+-Thing to do when assumed key delay expires,
 -Thing to do while key delay is counting down
 -Thing to do when key is released (only one frame)
 ]]

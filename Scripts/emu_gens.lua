@@ -1,5 +1,4 @@
-
-cs_spkeys = {'shift'}
+cs_spkeys = { 'shift' }
 
 mem_read_ubyte = memory.readbyte
 mem_read_uword = memory.readword
@@ -36,9 +35,9 @@ gui_registerafter = function(instructions) gens.registerafter(instructions) end
 
 margin = 20
 x_left = margin
-x_right = cli_screenwidth - margin - fnt_width*34
+x_right = cli_screenwidth - margin - fnt_width * 34
 
 y_1 = 10
-y_2 = y_1 + fnt_height*5
+y_2 = y_1 + fnt_height * 5
 y_sh = 66 --Sonic HUD offset
-y_limit = cli_screenheight - fnt_height*2
+y_limit = cli_screenheight - fnt_height * 2

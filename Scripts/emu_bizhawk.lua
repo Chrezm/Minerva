@@ -1,4 +1,4 @@
-cs_spkeys = {'LeftShift'}
+cs_spkeys = { 'LeftShift' }
 
 mem_read_ubyte = memory.read_u8
 mem_read_uword = memory.read_u16_be
@@ -15,21 +15,21 @@ get_game_size = function()
 	gam_ynat = 224 -- Natural y-resolution, defaulted to Genesis
 	gam_up = 0
 	gam_down = cli_screenheight
-	gam_xport = cli_screenheight * gam_xnat/gam_ynat
+	gam_xport = cli_screenheight * gam_xnat / gam_ynat
 	gam_yport = cli_screenheight
-	gam_left = (cli_screenwidth - gam_xport)/2
+	gam_left = (cli_screenwidth - gam_xport) / 2
 	gam_right = gam_left + gam_xport
-	gam_xscale = gam_xport/gam_xnat
-	gam_yscale = gam_yport/gam_ynat
-	
+	gam_xscale = gam_xport / gam_xnat
+	gam_yscale = gam_yport / gam_ynat
+
 	margin = 40
 	x_left = margin
-	x_right = cli_screenwidth - margin - fnt_width*34
+	x_right = cli_screenwidth - margin - fnt_width * 34
 
 	y_1 = 10
-	y_2 = y_1 + fnt_height*5
+	y_2 = y_1 + fnt_height * 5
 	y_sh = 160 --Sonic HUD offset
-	y_limit = cli_screenheight - fnt_height*2
+	y_limit = cli_screenheight - fnt_height * 2
 end
 table.insert(persistent_functions, get_game_size)
 
@@ -40,10 +40,12 @@ sav_load = savestate.load
 sav_create = savestate.create
 sav_save = savestate.save
 
-gui_register = function(instructions) while true do 
-	instructions()
-	emu.frameadvance()
-end 
+gui_register = function(instructions)
+	while true do
+		instructions()
+		emu.frameadvance()
+	end
 end
 
-print("---\nWARNING: If you need to restart Minerva on BizHawk (due to an error or some other reason), please reopen the Lua console before doing that. Attempting to restart Minerva on the same session may lead to unexpected errors.\n---")
+print(
+"---\nWARNING: If you need to restart Minerva on BizHawk (due to an error or some other reason), please reopen the Lua console before doing that. Attempting to restart Minerva on the same session may lead to unexpected errors.\n---")
