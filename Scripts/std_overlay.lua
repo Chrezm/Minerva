@@ -19,10 +19,17 @@ function sr_rampagenext()
 	end
 end
 
+local dynamic_objects_spawned_when_moving_left = 0
+
 function overlay()
 	if overlay_shown == 0 then
 		return
 	end
+
+	-- TEMP: REMOVE LATER
+	--show_1p_last_stood_on = false
+	--show_2p_last_stood_on = false
+	--object_limit = 1
 
 	--Last Object character stood on (Only relevant for Sonic games)
 	y = y_1
@@ -94,6 +101,7 @@ function overlay()
 
 	any_objects_flag = false
 	object_page = 1
+	eggman_address = 0
 
 	for i = 0, object_limit do
 		y_off = (y_2 + 2 * fnt_height)
@@ -128,6 +136,9 @@ function overlay()
 				end
 				if id_is_word then
 					gui.text(x + fnt_width * 9, y, string.format("%05x", mem_read_ulong(obj_offset)), "white", "black") --ID
+					if mem_read_ulong(obj_offset) == 0x65c04 or mem_read_ulong(obj_offset) == 0x65c50 then
+						eggman_address = obj_offset
+					end
 				else
 					gui.text(x + fnt_width * 9, y, string.format("%02x", mem_read_ubyte(obj_offset)), "white", "black") --ID
 				end
@@ -183,6 +194,134 @@ function overlay()
 	gui.text(x_left + fnt_width * 30, y2, string.format("%04x", mem_read_uword(SCR_TARG_LOCK_R)), "green", "black") --right
 	gui.text(x_left + fnt_width * 16, y3, string.format("%04x", mem_read_uword(SCR_TARG_LOCK_T)), "green", "black") --top
 	gui.text(x_left + fnt_width * 30, y3, string.format("%04x", mem_read_uword(SCR_TARG_LOCK_B)), "green", "black") --bottom
+
+	local object_list_pointer = mem_read_ulong(0xFFEF5A)
+
+	local value_at_object_load_addr_back = mem_read_ulong(0xFFF776)
+	local left_object_offset_in_list = mem_read_ubyte(value_at_object_load_addr_back + 4)
+	local x_coord_object_load_addr_back = mem_read_uword(value_at_object_load_addr_back + 0)
+	local y_coord_object_load_addr_back = mem_read_uword(value_at_object_load_addr_back + 2)
+	local pc_addr_object_load_addr_back = mem_read_ulong(object_list_pointer + left_object_offset_in_list * 4)
+	gui.text(x_left, y_sh + fnt_height * 3, "< NEXT OBJECT", "green", "black")
+	gui.text(x_left + fnt_width * 14, y_sh + fnt_height * 3,
+		string.format("%06x", value_at_object_load_addr_back, "white", "black"))
+	gui.text(x_left + fnt_width * 22, y_sh + fnt_height * 3,
+		string.format("X: %04x", x_coord_object_load_addr_back, "white", "black"))
+	gui.text(x_left + fnt_width * 32, y_sh + fnt_height * 3,
+		string.format("Y: %04x", y_coord_object_load_addr_back, "white", "black"))
+	gui.text(x_left + fnt_width * 42, y_sh + fnt_height * 3,
+		string.format("%02x", left_object_offset_in_list, "white", "black"))
+	gui.text(x_left + fnt_width * 47, y_sh + fnt_height * 3,
+		string.format("ID: %05x", pc_addr_object_load_addr_back, "white", "black"))
+
+	local value_at_object_respawn_index_back = mem_read_uword(0xFFF77C)
+	local respawn_object_back_offset = mem_read_ubyte(0xFF0000 + value_at_object_respawn_index_back)
+	gui.text(x_left, y_sh + fnt_height * 4, "< ORT INDEX", "green", "black")
+	gui.text(x_left + fnt_width * 16, y_sh + fnt_height * 4, string.format("%04x", value_at_object_respawn_index_back),
+		"white", "green")
+	gui.text(x_left + fnt_width * 24, y_sh + fnt_height * 4, string.format("%02x", respawn_object_back_offset), "white",
+		"green")
+
+
+	local value_at_object_load_addr_front = mem_read_ulong(0xFFF772)
+	local right_object_offset_in_list = mem_read_ubyte(value_at_object_load_addr_front + 4)
+	local x_coord_object_load_addr_front = mem_read_uword(value_at_object_load_addr_front + 0)
+	local y_coord_object_load_addr_front = mem_read_uword(value_at_object_load_addr_front + 2)
+	local pc_addr_object_load_addr_front = mem_read_ulong(object_list_pointer + right_object_offset_in_list * 4)
+	gui.text(x_left, y_sh + fnt_height * 5, "> NEXT OBJECT", "green", "black")
+	gui.text(x_left + fnt_width * 14, y_sh + fnt_height * 5,
+		string.format("%06x", value_at_object_load_addr_front, "white", "black"))
+	gui.text(x_left + fnt_width * 22, y_sh + fnt_height * 5,
+		string.format("X: %04x", x_coord_object_load_addr_front, "white", "black"))
+	gui.text(x_left + fnt_width * 32, y_sh + fnt_height * 5,
+		string.format("Y: %04x", y_coord_object_load_addr_front, "white", "black"))
+	gui.text(x_left + fnt_width * 42, y_sh + fnt_height * 5,
+		string.format("%02x", right_object_offset_in_list, "white", "black"))
+	gui.text(x_left + fnt_width * 47, y_sh + fnt_height * 5,
+		string.format("ID: %05x", pc_addr_object_load_addr_front, "white", "black"))
+
+	local value_at_object_respawn_index_front = mem_read_uword(0xFFF77A)
+	local respawn_object_front_offset = mem_read_ubyte(0xFF0000 + value_at_object_respawn_index_front)
+	gui.text(x_left, y_sh + fnt_height * 6, "> ORT INDEX", "green", "black")
+	gui.text(x_left + fnt_width * 16, y_sh + fnt_height * 6, string.format("%04x", value_at_object_respawn_index_front),
+		"white", "green")
+	gui.text(x_left + fnt_width * 24, y_sh + fnt_height * 6, string.format("%02x", respawn_object_front_offset), "white",
+		"green")
+
+	-- d1 = (mem_read_ubyte(0xFFEE24) * 4 + 4) % 256
+	-- d0 = (mem_read_uword(0xFFEE24 + 2))
+	-- if ((d0 % 256) - d1) < 0 then
+	-- 	d0 = d0 - d1 + 256
+	-- else
+	-- 	d0 = d0 - d1
+	-- end
+	-- d0b = (mem_read_uword(0xFFE500 + d0)) % 32768
+	-- d0c = d0b - mem_read_uword(0xFFEE78) - 0x90
+	--gui.text(x_left, y_sh+fnt_height*5, string.format("%02x - %04x - %04x - %04x", d1, d0, d0b, d0c))
+
+	--gui.text(x_left, y_sh + fnt_height * 4, string.format("$F772 %08x", mem_read_ulong(0xFFF772)), "green", "black") --top
+	--gui.text(x_left, y_sh + fnt_height * 5, string.format("$F776 %08x", mem_read_ulong(0xFFF776)), "green", "black") --top
+
+	gui.text(x_left, y_sh + fnt_height * 7, string.format("Button Obj Addr: %04x", eggman_address), "white", "black")
+	gui.text(x_left, y_sh + fnt_height * 8, string.format("RNG value: %08x", mem_read_ulong(0xFFF636)), "white", "black")
+
+	local loose_rings = 0
+	for i = 0, object_limit do
+		local obj_offset = OST_START + i * OST_ENTRY_LENGTH
+		local obj_id = mem_read_ulong(obj_offset)
+		if (obj_id == 0x1a88c) or (obj_id == 0x1a64a) or (obj_id == 0x1a662) then
+			loose_rings = loose_rings + 1
+		end
+	end
+
+	gui.text(x_left, y_sh + fnt_height * 9, string.format("%s %d", "Bouncing/attracted rings:", loose_rings), "white",
+		"black")
+
+	local dynamic_objects_spawned_now = count_dynamic_objects()
+	local dynamic_objects_spawned_now_text_color = "white"
+	if dynamic_objects_spawned_now == 90 then
+		dynamic_objects_spawned_now_text_color = "red"
+	end
+	gui.text(x_left, y_sh + fnt_height * 10,
+		string.format("DOSST Count now: %d", dynamic_objects_spawned_now),
+		dynamic_objects_spawned_now_text_color, "black")
+
+	local dynamic_objects_spawned_when_moving_left_text_color = "white"
+	if (dynamic_objects_spawned_when_moving_left == 90) then
+		dynamic_objects_spawned_when_moving_left_text_color = "red"
+	end
+	gui.text(x_left, y_sh + fnt_height * 11,
+		string.format("DOSST Count when moving left: %d", dynamic_objects_spawned_when_moving_left),
+		dynamic_objects_spawned_when_moving_left_text_color, "black")
+
+	for i = 0, 3 do
+		local offset = 0x64 + i * 6
+		local source_module_location = mem_read_ulong(0xFFFF00 + offset)
+		local destination_vram_location = mem_read_uword(0xFFFF00 + offset + 4)
+		local text_color = "white"
+		if source_module_location ~= 0 then
+			text_color = "red"
+		end
+
+		gui.text(x_left, y_sh + fnt_height * (13 + i),
+			string.format("KMDQQ slot %02d: %02x %08x %04x", i + 1, offset,
+				source_module_location, destination_vram_location),
+			text_color, "black")
+	end
+	for i = 0, 9 do
+		local offset = 0x7C + i * 6
+		local source_module_location = mem_read_ulong(0xFFFF00 + offset)
+		local destination_vram_location = mem_read_uword(0xFFFF00 + offset + 4)
+		local text_color = "white"
+		if source_module_location ~= 0 then
+			text_color = "red"
+		end
+
+		gui.text(x_left, y_sh + fnt_height * (17 + i),
+			string.format("Chaos slot %02d: %02x %08x %04x", i + 1, offset,
+				source_module_location, destination_vram_location),
+			text_color, "black")
+	end
 end
 
 met_overlayvis = { sr_overlayvis, sr_nil, sr_nil, sr_nil }
@@ -190,3 +329,29 @@ met_rampageprev = { sr_rampageprev, sr_nil, sr_nil, sr_nil }
 met_rampagenext = { sr_rampagenext, sr_nil, sr_nil, sr_nil }
 
 table.insert(persistent_functions, overlay)
+
+function count_dynamic_objects()
+	local count = 0
+	for i = 0xFFB128, 0xFFCAE2, 0x4A do
+		if mem_read_uword(i) ~= 0 then
+			count = count + 1
+		end
+	end
+	return count
+end
+
+function on_overlay_bus_exec(address)
+	dynamic_objects_spawned_when_moving_left = count_dynamic_objects()
+end
+
+function on_overlay_bus_write(address, value)
+	on_overlay_bus_exec(address)
+end
+
+function trace(address, value)
+	console.write(string.format("[%08x] Trace write to %08x with value %08x\n", emu.getregister("M68K PC"), address, value))
+end
+
+event.on_bus_exec(on_overlay_bus_exec, 0x01B8A8)
+-- event.on_bus_exec(on_overlay_bus_exec, 0x01CB66)
+event.onloadstate(on_overlay_bus_exec)
